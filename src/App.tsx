@@ -161,7 +161,7 @@ const App = () => {
             <p className="text-slate-400 mb-8 max-w-xl mx-auto text-sm">Management Consulting · AI Startups · Enterprise Technology</p>
             <div className="flex flex-wrap gap-4 justify-center">
               <button onClick={() => scrollToSection('contact')} className="px-8 py-3.5 bg-white text-slate-900 rounded-full font-medium hover:bg-slate-100 transition">Get in touch</button>
-              <a href="https://linkedin.com/in/mustafashakil" target="_blank" rel="noreferrer" className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 transition">
+              <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 transition">
                 <Linkedin size={18} /> LinkedIn
               </a>
             </div>
@@ -194,7 +194,7 @@ const App = () => {
               </div>
               <div className="flex items-center gap-2 text-slate-500">
                 <Linkedin size={15} className="text-blue-600 shrink-0" />
-                <a href="https://linkedin.com/in/mustafashakil" target="_blank" rel="noreferrer" className="hover:text-blue-600 transition">linkedin.com/in/mustafashakil</a>
+                <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="hover:text-blue-600 transition">linkedin.com/in/mustafa-shakil</a>
               </div>
             </div>
           </div>
