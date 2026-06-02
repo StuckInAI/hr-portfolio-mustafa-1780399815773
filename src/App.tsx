@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X, Linkedin, Mail, Award, Users, Target } from 'lucide-react'
+import { Menu, X, Linkedin, Award, Users, Target } from 'lucide-react'
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -120,15 +120,24 @@ const App = () => {
         </div>
       </section>
 
-      <section id="about" className="max-w-4xl mx-auto px-6 py-20">
+      <section id="about" className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
           <div className="text-blue-600 font-semibold text-sm tracking-[2px]">BIOGRAPHY</div>
           <h2 className="text-4xl font-semibold mt-3">About Me</h2>
         </div>
-        <div className="prose prose-lg max-w-none text-slate-600 text-center">
-          <p>Having around a decade of experience in talent attraction and recruiting for management consultancy and technology. Passionate about connecting talented individuals with the right opportunities and providing a positive candidate experience. Led engagement functions and worked as an HR Generalist.</p>
-          <div className="mt-4 flex flex-wrap justify-center gap-x-6 text-sm text-slate-500">
-            <span>mustafa_shakil@hotmail.com</span> • <span>+92 334 328 7869</span>
+        <div className="flex flex-col md:flex-row items-center gap-10">
+          <div className="flex-1 prose prose-lg text-slate-600">
+            <p>Having around a decade of experience in talent attraction and recruiting for management consultancy and technology. Passionate about connecting talented individuals with the right opportunities and providing a positive candidate experience. Led engagement functions and worked as an HR Generalist.</p>
+            <div className="mt-4 flex flex-wrap gap-x-6 text-sm text-slate-500">
+              <span>mustafa_shakil@hotmail.com</span> • <span>+92 334 328 7869</span>
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <img 
+              src="https://uuyrfcqxonpvccrznlao.supabase.co/storage/v1/object/public/prompt-images/build-images/1780401037047-Passport-Photo.jpeg" 
+              alt="Mustafa Shakil" 
+              className="w-64 h-72 object-cover rounded-2xl shadow-xl" 
+            />
           </div>
         </div>
       </section>
