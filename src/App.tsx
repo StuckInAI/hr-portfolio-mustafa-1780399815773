@@ -116,7 +116,7 @@ const App = () => {
                 <Linkedin size={18} /> LinkedIn
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
