@@ -77,8 +77,8 @@ const App = () => {
                 <Linkedin size={18} /> LinkedIn
               </a>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       <section id="about" className="max-w-4xl mx-auto px-6 py-20">
@@ -100,7 +100,7 @@ const App = () => {
           <div className="space-y-8">
             {[
               { role: "Head of People Operations", company: "TechNova", period: "2022 — Present", desc: "Leading people strategy for 700+ employees across 3 continents." },
-              { role: "Talent Acquisition Director", company: "Vanguard Labs", period: "2019 — 2022", desc: "Scaled hiring from 200 to 1200 employees in two years." },
+              { role: "Talent Acquisition Director", company: "Vanguard Labs", period: "2019 — 2022", desc: "Scaled hiring from 200 to 1,200 employees in two years." },
               { role: "HR Business Partner", company: "Global Dynamics", period: "2016 — 2019", desc: "Partnered with leadership to build high-performing engineering teams." }
             ].map((exp, i) => (
               <div key={i} className="border-l-2 border-blue-600 pl-8">
