@@ -2,8 +2,17 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
 
+const THEMES = [
+  { id: 'blue', label: 'Blue', c50: '#eff6ff', c100: '#dbeafe', c400: '#60a5fa', c600: '#2563eb', c700: '#1d4ed8', dot: '#2563eb' },
+  { id: 'emerald', label: 'Emerald', c50: '#ecfdf5', c100: '#d1fae5', c400: '#34d399', c600: '#059669', c700: '#047857', dot: '#059669' },
+  { id: 'violet', label: 'Violet', c50: '#f5f3ff', c100: '#ede9fe', c400: '#a78bfa', c600: '#7c3aed', c700: '#6d28d9', dot: '#7c3aed' },
+  { id: 'rose', label: 'Rose', c50: '#fff1f2', c100: '#ffe4e6', c400: '#fb7185', c600: '#e11d48', c700: '#be123c', dot: '#e11d48' },
+  { id: 'amber', label: 'Amber', c50: '#fffbeb', c100: '#fef3c7', c400: '#fbbf24', c600: '#d97706', c700: '#b45309', dot: '#d97706' }
+]
+
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [theme, setTheme] = useState(THEMES[0])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -108,17 +117,38 @@ const App = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div
+      className="min-h-screen bg-slate-50 text-slate-900"
+      style={{
+        '--c50': theme.c50,
+        '--c100': theme.c100,
+        '--c400': theme.c400,
+        '--c600': theme.c600,
+        '--c700': theme.c700
+      } as React.CSSProperties}
+    >
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur z-50 border-b">
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center h-20">
           <div className="font-semibold text-2xl tracking-tight">Mustafa Shakil</div>
-          <div className="hidden md:flex gap-8">
+          <div className="hidden md:flex items-center gap-8">
             {navLinks.map(link => (
-              <button key={link.id} onClick={() => scrollToSection(link.id)} className="hover:text-blue-600 transition-colors text-sm font-medium">
+              <button key={link.id} onClick={() => scrollToSection(link.id)} className="hover:text-[var(--c600)] transition-colors text-sm font-medium">
                 {link.label}
               </button>
             ))}
+            <div className="flex items-center gap-2 pl-4 border-l">
+              {THEMES.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setTheme(t)}
+                  title={t.label}
+                  aria-label={`${t.label} theme`}
+                  className="w-6 h-6 rounded-full border-2 transition"
+                  style={{ backgroundColor: t.dot, borderColor: theme.id === t.id ? t.dot : 'transparent', outline: theme.id === t.id ? `2px solid ${t.dot}` : 'none', outlineOffset: '2px' }}
+                />
+              ))}
+            </div>
           </div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -131,6 +161,18 @@ const App = () => {
                 {link.label}
               </button>
             ))}
+            <div className="flex items-center gap-2 pt-2 border-t">
+              {THEMES.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setTheme(t)}
+                  title={t.label}
+                  aria-label={`${t.label} theme`}
+                  className="w-7 h-7 rounded-full border-2 transition"
+                  style={{ backgroundColor: t.dot, borderColor: theme.id === t.id ? t.dot : 'transparent', outline: theme.id === t.id ? `2px solid ${t.dot}` : 'none', outlineOffset: '2px' }}
+                />
+              ))}
+            </div>
           </div>
         )}
       </nav>
@@ -156,7 +198,7 @@ const App = () => {
       {/* ABOUT */}
       <section id="about" className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
-          <div className="text-blue-600 font-semibold text-xs tracking-[3px] uppercase">Biography</div>
+          <div className="text-[var(--c600)] font-semibold text-xs tracking-[3px] uppercase">Biography</div>
           <h2 className="text-4xl font-bold mt-3">About Me</h2>
         </div>
         <div className="flex flex-col md:flex-row items-center gap-12">
@@ -165,20 +207,20 @@ const App = () => {
             <p>Proven track record of scaling engineering organizations rapidly while maintaining quality of hire—including 300+ strategic placements and reducing time-to-fill by 40%. Specialized in innovative sourcing techniques (GitHub, Discord, Reddit) to identify outlier technical talent for mission-critical roles in data science, software engineering, and digital consulting.</p>
             <div className="pt-4 space-y-2 text-sm">
               <div className="flex items-center gap-2 text-slate-500">
-                <Mail size={15} className="text-blue-600 shrink-0" />
-                <a href="mailto:mustafa_shakil@hotmail.com" className="hover:text-blue-600 transition">mustafa_shakil@hotmail.com</a>
+                <Mail size={15} className="text-[var(--c600)] shrink-0" />
+                <a href="mailto:mustafa_shakil@hotmail.com" className="hover:text-[var(--c600)] transition">mustafa_shakil@hotmail.com</a>
               </div>
               <div className="flex items-center gap-2 text-slate-500">
-                <Phone size={15} className="text-blue-600 shrink-0" />
-                <a href="tel:+923343287869" className="hover:text-blue-600 transition">+92 334 328 7869</a>
+                <Phone size={15} className="text-[var(--c600)] shrink-0" />
+                <a href="tel:+923343287869" className="hover:text-[var(--c600)] transition">+92 334 328 7869</a>
               </div>
               <div className="flex items-center gap-2 text-slate-500">
-                <MapPin size={15} className="text-blue-600 shrink-0" />
+                <MapPin size={15} className="text-[var(--c600)] shrink-0" />
                 <span>Islamabad, Pakistan</span>
               </div>
               <div className="flex items-center gap-2 text-slate-500">
-                <Linkedin size={15} className="text-blue-600 shrink-0" />
-                <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="hover:text-blue-600 transition">linkedin.com/in/mustafa-shakil</a>
+                <Linkedin size={15} className="text-[var(--c600)] shrink-0" />
+                <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="hover:text-[var(--c600)] transition">linkedin.com/in/mustafa-shakil</a>
               </div>
             </div>
           </div>
@@ -193,7 +235,7 @@ const App = () => {
       </section>
 
       {/* STATS STRIP */}
-      <div className="bg-blue-600 text-white py-10">
+      <div className="bg-[var(--c600)] text-white py-10">
         <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: '10+', label: 'Years Experience' },
@@ -203,7 +245,7 @@ const App = () => {
           ].map(stat => (
             <div key={stat.label}>
               <div className="text-3xl font-bold">{stat.value}</div>
-              <div className="text-blue-100 text-sm mt-1">{stat.label}</div>
+              <div className="text-[var(--c100)] text-sm mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -213,20 +255,20 @@ const App = () => {
       <section id="experience" className="bg-white py-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <div className="text-blue-600 font-semibold text-xs tracking-[3px] uppercase">Career History</div>
+            <div className="text-[var(--c600)] font-semibold text-xs tracking-[3px] uppercase">Career History</div>
             <h2 className="text-4xl font-bold mt-3">Professional Experience</h2>
           </div>
           <div className="space-y-14">
             {experiences.map((exp, i) => (
-              <div key={i} className="relative pl-8 border-l-2 border-blue-600">
-                <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-600" />
+              <div key={i} className="relative pl-8 border-l-2 border-[var(--c600)]">
+                <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-[var(--c600)]" />
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
                   <div>
                     <div className="font-bold text-xl text-slate-900">{exp.role}</div>
-                    <div className="text-blue-600 font-semibold">{exp.company}</div>
+                    <div className="text-[var(--c600)] font-semibold">{exp.company}</div>
                     <div className="text-slate-400 text-sm">{exp.location}</div>
                   </div>
-                  <div className="text-sm font-medium bg-blue-50 text-blue-700 px-3 py-1 rounded-full whitespace-nowrap">{exp.period}</div>
+                  <div className="text-sm font-medium bg-[var(--c50)] text-[var(--c700)] px-3 py-1 rounded-full whitespace-nowrap">{exp.period}</div>
                 </div>
                 {'progression' in exp && exp.progression && (
                   <div className="mt-2 mb-3 text-xs text-slate-500 italic bg-slate-50 px-3 py-2 rounded-lg">Career Progression: {exp.progression}</div>
@@ -235,8 +277,8 @@ const App = () => {
                   {exp.highlights.map((h, idx) => <li key={idx}>{h}</li>)}
                 </ul>
                 {exp.achievements && (
-                  <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg text-sm text-slate-700">
-                    <span className="font-semibold text-blue-700">Key Impact: </span>{exp.achievements}
+                  <div className="mt-4 p-3 bg-[var(--c50)] border-l-4 border-[var(--c400)] rounded-r-lg text-sm text-slate-700">
+                    <span className="font-semibold text-[var(--c700)]">Key Impact: </span>{exp.achievements}
                   </div>
                 )}
               </div>
@@ -248,7 +290,7 @@ const App = () => {
       {/* SKILLS */}
       <section id="skills" className="max-w-5xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
-          <div className="text-blue-600 font-semibold text-xs tracking-[3px] uppercase">Expertise</div>
+          <div className="text-[var(--c600)] font-semibold text-xs tracking-[3px] uppercase">Expertise</div>
           <h2 className="text-4xl font-bold mt-3">Core Competencies</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -258,7 +300,7 @@ const App = () => {
               <ul className="space-y-2">
                 {group.items.map(item => (
                   <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--c600)] shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -272,18 +314,18 @@ const App = () => {
       <section id="education" className="bg-slate-900 text-white py-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <div className="text-blue-400 font-semibold text-xs tracking-[3px] uppercase">Academic Background</div>
+            <div className="text-[var(--c400)] font-semibold text-xs tracking-[3px] uppercase">Academic Background</div>
             <h2 className="text-4xl font-bold mt-3">Education & Certifications</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div className="bg-white/10 rounded-2xl p-6">
-              <div className="text-blue-400 text-xs font-semibold uppercase tracking-widest mb-2">Master's Degree</div>
+              <div className="text-[var(--c400)] text-xs font-semibold uppercase tracking-widest mb-2">Master's Degree</div>
               <div className="font-bold text-lg">Master of Business Administration (MBA)</div>
               <div className="text-slate-300 text-sm mt-1">Human Resources Management</div>
               <div className="text-slate-400 text-sm mt-2">Iqra University · 2015 – 2017</div>
             </div>
             <div className="bg-white/10 rounded-2xl p-6">
-              <div className="text-blue-400 text-xs font-semibold uppercase tracking-widest mb-2">Bachelor's Degree</div>
+              <div className="text-[var(--c400)] text-xs font-semibold uppercase tracking-widest mb-2">Bachelor's Degree</div>
               <div className="font-bold text-lg">Bachelor of Business Administration (BBA)</div>
               <div className="text-slate-300 text-sm mt-1">Human Resources Management</div>
               <div className="text-slate-400 text-sm mt-2">Iqra University · 2011 – 2015</div>
@@ -294,7 +336,7 @@ const App = () => {
             <div className="flex flex-wrap justify-center gap-3">
               {certifications.map(cert => (
                 <div key={cert} className="px-4 py-2 bg-white/10 rounded-full text-sm text-slate-200 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--c400)] shrink-0" />
                   {cert}
                 </div>
               ))}
@@ -309,21 +351,21 @@ const App = () => {
 
       {/* FLOATING CONTACT CARD */}
       <div className="hidden md:flex flex-col gap-3 fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 w-72 z-40">
-        <div className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-1">Contact</div>
-        <a href="mailto:mustafa_shakil@hotmail.com" className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition">
-          <Mail size={15} className="text-blue-600 shrink-0" />
+        <div className="text-xs font-semibold uppercase tracking-widest text-[var(--c600)] mb-1">Contact</div>
+        <a href="mailto:mustafa_shakil@hotmail.com" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
+          <Mail size={15} className="text-[var(--c600)] shrink-0" />
           mustafa_shakil@hotmail.com
         </a>
-        <a href="tel:+923343287869" className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition">
-          <Phone size={15} className="text-blue-600 shrink-0" />
+        <a href="tel:+923343287869" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
+          <Phone size={15} className="text-[var(--c600)] shrink-0" />
           +92 334 328 7869
         </a>
         <div className="flex items-center gap-2 text-sm text-slate-600">
-          <MapPin size={15} className="text-blue-600 shrink-0" />
+          <MapPin size={15} className="text-[var(--c600)] shrink-0" />
           Islamabad, Pakistan
         </div>
-        <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition">
-          <Linkedin size={15} className="text-blue-600 shrink-0" />
+        <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
+          <Linkedin size={15} className="text-[var(--c600)] shrink-0" />
           linkedin.com/in/mustafa-shakil
         </a>
       </div>
@@ -332,3 +374,8 @@ const App = () => {
 }
 
 export default App
+
+
+
+
+
