@@ -216,16 +216,18 @@ const App = () => {
       </nav>
 
       {/* HERO */}
-      <section className="pt-20 min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-[var(--c900)] to-[var(--c700)] text-white">
-        <div className="max-w-4xl px-6 text-center">
+      <section className="relative pt-20 min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-[var(--c900)] via-[var(--c700)] to-[var(--c600)] text-white overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1), transparent 45%)' }} />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        <div className="relative max-w-4xl px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-sm mb-6 tracking-widest uppercase">Talent Acquisition Leader</div>
-            <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-4">Mustafa Shakil</h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-4 max-w-2xl mx-auto">Manager-level Talent Acquisition professional with 10+ years of experience building high-performing technical teams</p>
+            <div className="inline-block px-4 py-1 bg-white/10 backdrop-blur rounded-full text-sm mb-6 tracking-widest uppercase border border-white/10 shadow-lg">Talent Acquisition Leader</div>
+            <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-4 drop-shadow-[0_2px_20px_rgba(0,0,0,0.25)]">Mustafa Shakil</h1>
+            <p className="text-xl md:text-2xl text-slate-200 mb-4 max-w-2xl mx-auto">Manager-level Talent Acquisition professional with 10+ years of experience building high-performing technical teams</p>
             <p className="text-slate-400 mb-8 max-w-xl mx-auto text-sm">Management Consulting · AI Startups · Enterprise Technology</p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a href="mailto:mustafa_shakil@hotmail.com" className="px-8 py-3.5 bg-white text-slate-900 rounded-full font-medium hover:bg-slate-100 transition">Get in touch</a>
-              <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 transition">
+              <a href="mailto:mustafa_shakil@hotmail.com" className="px-8 py-3.5 bg-white text-slate-900 rounded-full font-medium shadow-xl shadow-black/20 hover:bg-slate-100 hover:-translate-y-0.5 transition-all">Get in touch</a>
+              <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 hover:-translate-y-0.5 transition-all backdrop-blur">
                 <Linkedin size={18} /> LinkedIn
               </a>
             </div>
@@ -263,17 +265,19 @@ const App = () => {
             </div>
           </div>
           <div className="flex-shrink-0">
-            <img
-              src={passportPhoto}
-              alt="Mustafa Shakil"
-              className="w-64 h-72 object-cover rounded-2xl shadow-2xl"
-            />
+            <div className="p-1.5 bg-gradient-to-br from-[var(--c400)] to-[var(--c700)] rounded-2xl shadow-2xl">
+              <img
+                src={passportPhoto}
+                alt="Mustafa Shakil"
+                className="w-64 h-72 object-cover rounded-xl ring-4 ring-white"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* STATS STRIP */}
-      <div className="bg-[var(--c600)] text-white py-10">
+      <div className="bg-gradient-to-r from-[var(--c700)] via-[var(--c600)] to-[var(--c700)] text-white py-12 shadow-inner">
         <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: '10+', label: 'Years Experience' },
@@ -281,8 +285,8 @@ const App = () => {
             { value: '40%', label: 'Reduction in Time-to-Fill' },
             { value: '95%', label: 'Offer Acceptance Rate' }
           ].map(stat => (
-            <div key={stat.label}>
-              <div className="text-3xl font-bold">{stat.value}</div>
+            <div key={stat.label} className="hover:-translate-y-1 transition-transform">
+              <div className="text-4xl font-bold drop-shadow-sm">{stat.value}</div>
               <div className="text-[var(--c100)] text-sm mt-1">{stat.label}</div>
             </div>
           ))}
@@ -298,8 +302,8 @@ const App = () => {
           </div>
           <div className="space-y-14">
             {experiences.map((exp, i) => (
-              <div key={i} className="relative pl-8 border-l-2 border-[var(--c600)]">
-                <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-[var(--c600)]" />
+              <div key={i} className="relative pl-8 border-l-2 border-[var(--c600)] hover:pl-9 transition-all">
+                <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-[var(--c600)] ring-4 ring-[var(--c50)] shadow-md" />
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
                   <div>
                     <div className="font-bold text-xl text-slate-900">{exp.role}</div>
@@ -333,7 +337,7 @@ const App = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {competencies.map(group => (
-            <div key={group.category} className="bg-white rounded-2xl border p-6 shadow-sm">
+            <div key={group.category} className="bg-white rounded-2xl border p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
               <h3 className="font-bold text-slate-900 mb-4 text-base border-b pb-3">{group.category}</h3>
               <ul className="space-y-2">
                 {group.items.map(item => (
