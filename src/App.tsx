@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X, Linkedin, Mail, Phone, MapPin, Palette, Check } from 'lucide-react'
+import { Menu, X, Linkedin, Mail, Phone, MapPin, Palette, Check, Download } from 'lucide-react'
 import passportPhoto from '@/assets/passport-photo.jpeg'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+}
 
 const THEMES = [
   { id: 'navy', label: 'Navy', c50: '#f1f5f9', c100: '#e2e8f0', c400: '#64748b', c600: '#334155', c700: '#1e293b', c900: '#0f172a', dot: '#1e293b' },
@@ -19,6 +24,7 @@ const App = () => {
   const themeMenuRef = useRef<HTMLDivElement>(null)
   const [isContactOpen, setIsContactOpen] = useState(false)
   const contactRef = useRef<HTMLDivElement>(null)
+  const [activeSection, setActiveSection] = useState('about')
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -33,10 +39,68 @@ const App = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  useEffect(() => {
+    const ids = ['about', 'experience', 'skills', 'education']
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
+    )
+    ids.forEach(id => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     element?.scrollIntoView({ behavior: 'smooth' })
     setIsMenuOpen(false)
+  }
+
+  const downloadResume = () => {
+    const lines = [
+      'MUSTAFA SHAKIL',
+      'Talent Acquisition Leader',
+      'Email: mustafa_shakil@hotmail.com | Phone: +92 334 328 7869 | Islamabad, Pakistan',
+      'LinkedIn: linkedin.com/in/mustafa-shakil',
+      '',
+      'SUMMARY',
+      'Manager-level Talent Acquisition professional with 10+ years of experience building high-performing technical teams across management consulting, AI startups, and enterprise technology.',
+      '',
+      'EXPERIENCE',
+      ...experiences.flatMap(exp => [
+        `${exp.role} — ${exp.company} (${exp.period})`,
+        exp.location,
+        ...exp.highlights.map(h => `  • ${h}`),
+        exp.achievements ? `  Key Impact: ${exp.achievements}` : '',
+        ''
+      ]),
+      'CORE COMPETENCIES',
+      ...competencies.flatMap(c => [`${c.category}: ${c.items.join(', ')}`]),
+      '',
+      'EDUCATION',
+      'Master of Business Administration (MBA), Human Resources Management — Iqra University (2015–2017)',
+      'Bachelor of Business Administration (BBA), Human Resources Management — Iqra University (2011–2015)',
+      '',
+      'CERTIFICATIONS',
+      ...certifications.map(c => `  • ${c}`)
+    ]
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'Mustafa_Shakil_Resume.txt'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
   }
 
   const navLinks = [
@@ -153,8 +217,15 @@ const App = () => {
           <div className="font-semibold text-2xl tracking-tight">Mustafa Shakil</div>
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map(link => (
-              <button key={link.id} onClick={() => scrollToSection(link.id)} className="hover:text-[var(--c600)] transition-colors text-sm font-medium">
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className={`relative pb-1 transition-colors text-sm font-medium ${activeSection === link.id ? 'text-[var(--c600)]' : 'hover:text-[var(--c600)] text-slate-700'}`}
+              >
                 {link.label}
+                {activeSection === link.id && (
+                  <motion.span layoutId="nav-underline" className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-[var(--c600)] rounded-full" />
+                )}
               </button>
             ))}
             <div className="relative pl-4 border-l" ref={themeMenuRef}>
@@ -219,29 +290,50 @@ const App = () => {
       <section className="relative pt-20 min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-[var(--c900)] via-[var(--c700)] to-[var(--c600)] text-white overflow-hidden">
         <div className="pointer-events-none absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1), transparent 45%)' }} />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        <div className="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-[var(--c400)] opacity-20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-white opacity-10 blur-3xl" />
         <div className="relative max-w-4xl px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-block px-4 py-1 bg-white/10 backdrop-blur rounded-full text-sm mb-6 tracking-widest uppercase border border-white/10 shadow-lg">Talent Acquisition Leader</div>
             <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-4 drop-shadow-[0_2px_20px_rgba(0,0,0,0.25)]">Mustafa Shakil</h1>
             <p className="text-xl md:text-2xl text-slate-200 mb-4 max-w-2xl mx-auto">Manager-level Talent Acquisition professional with 10+ years of experience building high-performing technical teams</p>
-            <p className="text-slate-400 mb-8 max-w-xl mx-auto text-sm">Management Consulting · AI Startups · Enterprise Technology</p>
+            <p className="text-slate-400 mb-6 max-w-xl mx-auto text-sm">Management Consulting · AI Startups · Enterprise Technology</p>
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <a href="mailto:mustafa_shakil@hotmail.com" aria-label="Email" className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 hover:-translate-y-0.5 transition-all">
+                <Mail size={16} />
+              </a>
+              <a href="tel:+923343287869" aria-label="Phone" className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 hover:-translate-y-0.5 transition-all">
+                <Phone size={16} />
+              </a>
+              <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 hover:-translate-y-0.5 transition-all">
+                <Linkedin size={16} />
+              </a>
+            </div>
             <div className="flex flex-wrap gap-4 justify-center">
               <a href="mailto:mustafa_shakil@hotmail.com" className="px-8 py-3.5 bg-white text-slate-900 rounded-full font-medium shadow-xl shadow-black/20 hover:bg-slate-100 hover:-translate-y-0.5 transition-all">Get in touch</a>
-              <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 hover:-translate-y-0.5 transition-all backdrop-blur">
-                <Linkedin size={18} /> LinkedIn
-              </a>
+              <button onClick={downloadResume} className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 hover:-translate-y-0.5 transition-all backdrop-blur">
+                <Download size={18} /> Download Resume
+              </button>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="max-w-5xl mx-auto px-6 py-20">
-        <div className="text-center mb-12">
+      <motion.section
+        id="about"
+        className="relative max-w-5xl mx-auto px-6 py-20 overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeUp}
+      >
+        <div className="pointer-events-none absolute top-10 -right-24 w-72 h-72 rounded-full bg-[var(--c100)] opacity-60 blur-3xl" />
+        <div className="text-center mb-12 relative">
           <div className="text-[var(--c600)] font-semibold text-xs tracking-[3px] uppercase">Biography</div>
           <h2 className="text-4xl font-bold mt-3">About Me</h2>
         </div>
-        <div className="flex flex-col md:flex-row items-center gap-12">
+        <div className="relative flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 text-slate-600 space-y-4 text-base leading-relaxed">
             <p>Manager-level Talent Acquisition professional with 10+ years of experience building high-performing technical teams across management consulting, AI startups, and enterprise technology.</p>
             <p>Proven track record of scaling engineering organizations rapidly while maintaining quality of hire—including 300+ strategic placements and reducing time-to-fill by 40%. Specialized in innovative sourcing techniques (GitHub, Discord, Reddit) to identify outlier technical talent for mission-critical roles in data science, software engineering, and digital consulting.</p>
@@ -274,10 +366,16 @@ const App = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* STATS STRIP */}
-      <div className="bg-gradient-to-r from-[var(--c700)] via-[var(--c600)] to-[var(--c700)] text-white py-12 shadow-inner">
+      <motion.div
+        className="bg-gradient-to-r from-[var(--c700)] via-[var(--c600)] to-[var(--c700)] text-white py-12 shadow-inner"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeUp}
+      >
         <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: '10+', label: 'Years Experience' },
@@ -291,11 +389,18 @@ const App = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* EXPERIENCE */}
-      <section id="experience" className="bg-white py-20">
-        <div className="max-w-5xl mx-auto px-6">
+      <section id="experience" className="relative bg-white py-20 overflow-hidden">
+        <div className="pointer-events-none absolute bottom-0 -left-24 w-72 h-72 rounded-full bg-[var(--c50)] opacity-70 blur-3xl" />
+        <motion.div
+          className="relative max-w-5xl mx-auto px-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={fadeUp}
+        >
           <div className="text-center mb-12">
             <div className="text-[var(--c600)] font-semibold text-xs tracking-[3px] uppercase">Career History</div>
             <h2 className="text-4xl font-bold mt-3">Professional Experience</h2>
@@ -326,11 +431,18 @@ const App = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* SKILLS */}
-      <section id="skills" className="max-w-5xl mx-auto px-6 py-20">
+      <motion.section
+        id="skills"
+        className="max-w-5xl mx-auto px-6 py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeUp}
+      >
         <div className="text-center mb-12">
           <div className="text-[var(--c600)] font-semibold text-xs tracking-[3px] uppercase">Expertise</div>
           <h2 className="text-4xl font-bold mt-3">Core Competencies</h2>
@@ -350,11 +462,18 @@ const App = () => {
             </div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* EDUCATION */}
-      <section id="education" className="bg-[var(--c900)] text-white py-20">
-        <div className="max-w-5xl mx-auto px-6">
+      <section id="education" className="relative bg-[var(--c900)] text-white py-20 overflow-hidden">
+        <div className="pointer-events-none absolute -top-20 right-10 w-80 h-80 rounded-full bg-[var(--c600)] opacity-30 blur-3xl" />
+        <motion.div
+          className="relative max-w-5xl mx-auto px-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+        >
           <div className="text-center mb-12">
             <div className="text-[var(--c400)] font-semibold text-xs tracking-[3px] uppercase">Academic Background</div>
             <h2 className="text-4xl font-bold mt-3">Education & Certifications</h2>
@@ -384,7 +503,7 @@ const App = () => {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <footer className="py-7 text-center text-sm text-slate-500 border-t">
