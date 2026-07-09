@@ -1,18 +1,31 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import { Menu, X, Linkedin, Mail, Phone, MapPin, Palette, Check } from 'lucide-react'
 
 const THEMES = [
-  { id: 'blue', label: 'Blue', c50: '#eff6ff', c100: '#dbeafe', c400: '#60a5fa', c600: '#2563eb', c700: '#1d4ed8', dot: '#2563eb' },
-  { id: 'emerald', label: 'Emerald', c50: '#ecfdf5', c100: '#d1fae5', c400: '#34d399', c600: '#059669', c700: '#047857', dot: '#059669' },
-  { id: 'violet', label: 'Violet', c50: '#f5f3ff', c100: '#ede9fe', c400: '#a78bfa', c600: '#7c3aed', c700: '#6d28d9', dot: '#7c3aed' },
-  { id: 'rose', label: 'Rose', c50: '#fff1f2', c100: '#ffe4e6', c400: '#fb7185', c600: '#e11d48', c700: '#be123c', dot: '#e11d48' },
-  { id: 'amber', label: 'Amber', c50: '#fffbeb', c100: '#fef3c7', c400: '#fbbf24', c600: '#d97706', c700: '#b45309', dot: '#d97706' }
+  { id: 'navy', label: 'Navy', c50: '#f1f5f9', c100: '#e2e8f0', c400: '#64748b', c600: '#334155', c700: '#1e293b', c900: '#0f172a', dot: '#1e293b' },
+  { id: 'blue', label: 'Blue', c50: '#eff6ff', c100: '#dbeafe', c400: '#60a5fa', c600: '#2563eb', c700: '#1d4ed8', c900: '#1e3a8a', dot: '#2563eb' },
+  { id: 'emerald', label: 'Emerald', c50: '#ecfdf5', c100: '#d1fae5', c400: '#34d399', c600: '#059669', c700: '#047857', c900: '#064e3b', dot: '#059669' },
+  { id: 'violet', label: 'Violet', c50: '#f5f3ff', c100: '#ede9fe', c400: '#a78bfa', c600: '#7c3aed', c700: '#6d28d9', c900: '#4c1d95', dot: '#7c3aed' },
+  { id: 'rose', label: 'Rose', c50: '#fff1f2', c100: '#ffe4e6', c400: '#fb7185', c600: '#e11d48', c700: '#be123c', c900: '#881337', dot: '#e11d48' },
+  { id: 'amber', label: 'Amber', c50: '#fffbeb', c100: '#fef3c7', c400: '#fbbf24', c600: '#d97706', c700: '#b45309', c900: '#78350f', dot: '#d97706' }
 ]
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [theme, setTheme] = useState(THEMES[0])
+  const [isThemeOpen, setIsThemeOpen] = useState(false)
+  const themeMenuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (themeMenuRef.current && !themeMenuRef.current.contains(e.target as Node)) {
+        setIsThemeOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -124,7 +137,8 @@ const App = () => {
         '--c100': theme.c100,
         '--c400': theme.c400,
         '--c600': theme.c600,
-        '--c700': theme.c700
+        '--c700': theme.c700,
+        '--c900': theme.c900
       } as React.CSSProperties}
     >
       {/* NAV */}
@@ -137,17 +151,30 @@ const App = () => {
                 {link.label}
               </button>
             ))}
-            <div className="flex items-center gap-2 pl-4 border-l">
-              {THEMES.map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setTheme(t)}
-                  title={t.label}
-                  aria-label={`${t.label} theme`}
-                  className="w-6 h-6 rounded-full border-2 transition"
-                  style={{ backgroundColor: t.dot, borderColor: theme.id === t.id ? t.dot : 'transparent', outline: theme.id === t.id ? `2px solid ${t.dot}` : 'none', outlineOffset: '2px' }}
-                />
-              ))}
+            <div className="relative pl-4 border-l" ref={themeMenuRef}>
+              <button
+                onClick={() => setIsThemeOpen(!isThemeOpen)}
+                title="Color theme"
+                aria-label="Choose color theme"
+                className="w-9 h-9 rounded-full flex items-center justify-center border border-slate-200 hover:border-[var(--c600)] transition"
+              >
+                <Palette size={18} style={{ color: theme.dot }} />
+              </button>
+              {isThemeOpen && (
+                <div className="absolute right-0 top-12 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 w-44 z-50">
+                  {THEMES.map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => { setTheme(t); setIsThemeOpen(false) }}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 transition"
+                    >
+                      <span className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: t.dot }} />
+                      <span className="flex-1 text-left">{t.label}</span>
+                      {theme.id === t.id && <Check size={14} className="text-slate-400" />}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
@@ -161,24 +188,29 @@ const App = () => {
                 {link.label}
               </button>
             ))}
-            <div className="flex items-center gap-2 pt-2 border-t">
-              {THEMES.map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setTheme(t)}
-                  title={t.label}
-                  aria-label={`${t.label} theme`}
-                  className="w-7 h-7 rounded-full border-2 transition"
-                  style={{ backgroundColor: t.dot, borderColor: theme.id === t.id ? t.dot : 'transparent', outline: theme.id === t.id ? `2px solid ${t.dot}` : 'none', outlineOffset: '2px' }}
-                />
-              ))}
+            <div className="pt-2 border-t">
+              <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Color Theme</div>
+              <div className="flex items-center gap-3 flex-wrap">
+                {THEMES.map(t => (
+                  <button
+                    key={t.id}
+                    onClick={() => setTheme(t)}
+                    title={t.label}
+                    aria-label={`${t.label} theme`}
+                    className="w-8 h-8 rounded-full border-2 transition flex items-center justify-center"
+                    style={{ backgroundColor: t.dot, borderColor: theme.id === t.id ? '#0f172a' : 'transparent' }}
+                  >
+                    {theme.id === t.id && <Check size={14} className="text-white" />}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
       </nav>
 
       {/* HERO */}
-      <section className="pt-20 min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-700 text-white">
+      <section className="pt-20 min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-[var(--c900)] to-[var(--c700)] text-white">
         <div className="max-w-4xl px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-sm mb-6 tracking-widest uppercase">Talent Acquisition Leader</div>
@@ -311,7 +343,7 @@ const App = () => {
       </section>
 
       {/* EDUCATION */}
-      <section id="education" className="bg-slate-900 text-white py-20">
+      <section id="education" className="bg-[var(--c900)] text-white py-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <div className="text-[var(--c400)] font-semibold text-xs tracking-[3px] uppercase">Academic Background</div>
