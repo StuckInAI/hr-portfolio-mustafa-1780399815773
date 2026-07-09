@@ -4,8 +4,6 @@ import { Menu, X, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [formData, setFormData] = useState<{ name: string; email: string; message: string }>({ name: '', email: '', message: '' })
-  const [submitted, setSubmitted] = useState(false)
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -13,25 +11,11 @@ const App = () => {
     setIsMenuOpen(false)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!formData.name || !formData.email || !formData.message) return
-    const messages = JSON.parse(localStorage.getItem('messages') || '[]')
-    messages.push({ ...formData, date: new Date().toISOString() })
-    localStorage.setItem('messages', JSON.stringify(messages))
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({ name: '', email: '', message: '' })
-    }, 2500)
-  }
-
   const navLinks = [
     { label: 'About', id: 'about' },
     { label: 'Experience', id: 'experience' },
     { label: 'Skills', id: 'skills' },
-    { label: 'Education', id: 'education' },
-    { label: 'Contact', id: 'contact' }
+    { label: 'Education', id: 'education' }
   ]
 
   const experiences = [
@@ -160,7 +144,7 @@ const App = () => {
             <p className="text-xl md:text-2xl text-slate-300 mb-4 max-w-2xl mx-auto">Manager-level Talent Acquisition professional with 10+ years of experience building high-performing technical teams</p>
             <p className="text-slate-400 mb-8 max-w-xl mx-auto text-sm">Management Consulting · AI Startups · Enterprise Technology</p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <button onClick={() => scrollToSection('contact')} className="px-8 py-3.5 bg-white text-slate-900 rounded-full font-medium hover:bg-slate-100 transition">Get in touch</button>
+              <a href="mailto:mustafa_shakil@hotmail.com" className="px-8 py-3.5 bg-white text-slate-900 rounded-full font-medium hover:bg-slate-100 transition">Get in touch</a>
               <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="px-8 py-3.5 border border-white/30 rounded-full flex items-center gap-2 hover:bg-white/10 transition">
                 <Linkedin size={18} /> LinkedIn
               </a>
@@ -316,49 +300,6 @@ const App = () => {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="bg-slate-50 py-20">
-        <div className="max-w-xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <div className="text-blue-600 font-semibold text-xs tracking-[3px] uppercase">Get In Touch</div>
-            <h2 className="text-4xl font-bold mt-3">Let's Connect</h2>
-            <p className="text-slate-500 mt-3">Open to strategic HR opportunities and collaborations.</p>
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Full name"
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-5 py-3.5 bg-white border rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={e => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-5 py-3.5 bg-white border rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <textarea
-              placeholder="Message"
-              rows={5}
-              value={formData.message}
-              onChange={e => setFormData({ ...formData, message: e.target.value })}
-              className="w-full px-5 py-3.5 bg-white border rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition"
-            >
-              {submitted ? '✓ Message Sent!' : 'Send Message'}
-            </button>
-          </form>
         </div>
       </section>
 
