@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, Linkedin, Mail, Phone, MapPin, Palette, Check } from 'lucide-react'
+import passportPhoto from '@/assets/passport-photo.jpeg'
 
 const THEMES = [
   { id: 'navy', label: 'Navy', c50: '#f1f5f9', c100: '#e2e8f0', c400: '#64748b', c600: '#334155', c700: '#1e293b', c900: '#0f172a', dot: '#1e293b' },
@@ -258,7 +259,7 @@ const App = () => {
           </div>
           <div className="flex-shrink-0">
             <img
-              src="https://uuyrfcqxonpvccrznlao.supabase.co/storage/v1/object/public/prompt-images/build-images/1780401037047-Passport-Photo.jpeg"
+              src={passportPhoto}
               alt="Mustafa Shakil"
               className="w-64 h-72 object-cover rounded-2xl shadow-2xl"
             />
