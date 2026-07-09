@@ -17,11 +17,16 @@ const App = () => {
   const [theme, setTheme] = useState(THEMES[0])
   const [isThemeOpen, setIsThemeOpen] = useState(false)
   const themeMenuRef = useRef<HTMLDivElement>(null)
+  const [isContactOpen, setIsContactOpen] = useState(false)
+  const contactRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (themeMenuRef.current && !themeMenuRef.current.contains(e.target as Node)) {
         setIsThemeOpen(false)
+      }
+      if (contactRef.current && !contactRef.current.contains(e.target as Node)) {
+        setIsContactOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -382,25 +387,36 @@ const App = () => {
         © {new Date().getFullYear()} Mustafa Shakil · All rights reserved.
       </footer>
 
-      {/* FLOATING CONTACT CARD */}
-      <div className="hidden md:flex flex-col gap-3 fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 w-72 z-40">
-        <div className="text-xs font-semibold uppercase tracking-widest text-[var(--c600)] mb-1">Contact</div>
-        <a href="mailto:mustafa_shakil@hotmail.com" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
-          <Mail size={15} className="text-[var(--c600)] shrink-0" />
-          mustafa_shakil@hotmail.com
-        </a>
-        <a href="tel:+923343287869" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
-          <Phone size={15} className="text-[var(--c600)] shrink-0" />
-          +92 334 328 7869
-        </a>
-        <div className="flex items-center gap-2 text-sm text-slate-600">
-          <MapPin size={15} className="text-[var(--c600)] shrink-0" />
-          Islamabad, Pakistan
-        </div>
-        <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
-          <Linkedin size={15} className="text-[var(--c600)] shrink-0" />
-          linkedin.com/in/mustafa-shakil
-        </a>
+      {/* FLOATING CONTACT BUBBLE */}
+      <div className="hidden md:block fixed bottom-6 right-6 z-40" ref={contactRef}>
+        {isContactOpen && (
+          <div className="mb-3 flex flex-col gap-3 bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 w-72">
+            <div className="text-xs font-semibold uppercase tracking-widest text-[var(--c600)] mb-1">Contact</div>
+            <a href="mailto:mustafa_shakil@hotmail.com" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
+              <Mail size={15} className="text-[var(--c600)] shrink-0" />
+              mustafa_shakil@hotmail.com
+            </a>
+            <a href="tel:+923343287869" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
+              <Phone size={15} className="text-[var(--c600)] shrink-0" />
+              +92 334 328 7869
+            </a>
+            <div className="flex items-center gap-2 text-sm text-slate-600">
+              <MapPin size={15} className="text-[var(--c600)] shrink-0" />
+              Islamabad, Pakistan
+            </div>
+            <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-slate-600 hover:text-[var(--c600)] transition">
+              <Linkedin size={15} className="text-[var(--c600)] shrink-0" />
+              linkedin.com/in/mustafa-shakil
+            </a>
+          </div>
+        )}
+        <button
+          onClick={() => setIsContactOpen(!isContactOpen)}
+          aria-label="Toggle contact info"
+          className="w-14 h-14 rounded-full bg-[var(--c600)] text-white shadow-2xl flex items-center justify-center hover:bg-[var(--c700)] transition ml-auto"
+        >
+          {isContactOpen ? <X size={22} /> : <Mail size={22} />}
+        </button>
       </div>
     </div>
   )
