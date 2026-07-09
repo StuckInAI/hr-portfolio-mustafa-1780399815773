@@ -306,6 +306,27 @@ const App = () => {
       <footer className="py-7 text-center text-sm text-slate-500 border-t">
         © {new Date().getFullYear()} Mustafa Shakil · All rights reserved.
       </footer>
+
+      {/* FLOATING CONTACT CARD */}
+      <div className="hidden md:flex flex-col gap-3 fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl border border-slate-200 p-5 w-72 z-40">
+        <div className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-1">Contact</div>
+        <a href="mailto:mustafa_shakil@hotmail.com" className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition">
+          <Mail size={15} className="text-blue-600 shrink-0" />
+          mustafa_shakil@hotmail.com
+        </a>
+        <a href="tel:+923343287869" className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition">
+          <Phone size={15} className="text-blue-600 shrink-0" />
+          +92 334 328 7869
+        </a>
+        <div className="flex items-center gap-2 text-sm text-slate-600">
+          <MapPin size={15} className="text-blue-600 shrink-0" />
+          Islamabad, Pakistan
+        </div>
+        <a href="https://www.linkedin.com/in/mustafa-shakil/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition">
+          <Linkedin size={15} className="text-blue-600 shrink-0" />
+          linkedin.com/in/mustafa-shakil
+        </a>
+      </div>
     </div>
   )
 }
